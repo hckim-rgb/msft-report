@@ -505,8 +505,6 @@ def main():
     dry_run = "--dry-run" in sys.argv
     generate_only = "--generate-only" in sys.argv
     send_only = "--send-only" in sys.argv
-    # Additional flag to prevent duplicate sends within the same day.
-    check_today = "--check-today" in sys.argv
 
     if send_only:
         if not MESSAGE_PATH.exists():
@@ -526,16 +524,6 @@ def main():
         print(message)
         print(f"\nReport: {report_path}")
         return
-
-    # If the --check-today flag is provided, do not send a message again
-    # if one has already been generated and sent today. This works by
-    # checking the modification date of the saved message file.
-    if check_today:
-        if MESSAGE_PATH.exists():
-            mod_time = dt.datetime.fromtimestamp(MESSAGE_PATH.stat().st_mtime)
-            if mod_time.date() == dt.datetime.now().date():
-                print("A message was already sent today; skipping send.")
-                return
 
     result = send_kakao_memo(message)
     print(json.dumps(result, ensure_ascii=False, indent=2))
