@@ -3,7 +3,7 @@ name: MSFT Daily Report
 on:
   schedule:
     # 10:00 Asia/Seoul = 01:00 UTC
-    - cron: "0 1 * * *"
+    - cron: "0,10,20,30,40,50 1 * * *"
   workflow_dispatch:
 
 permissions:
